@@ -25,18 +25,19 @@
 
 include ../../../../make-rules/shared-macros.mk
 
-COMPONENT_NAME=		nanliu-staging
-COMPONENT_VERSION=	1.0.3
+GIT_REPO= https://github.com/voxpupuli/puppet-staging
+GIT_BRANCH= v1.0.7
+GIT_COMMIT_ID= dbea7c1
+GIT_HASH=
+
+COMPONENT_NAME=		puppet-staging
+COMPONENT_VERSION=	1.0.7
 COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH=	\
-    sha256:e93af4bb515e91416a39ec18f85b33925e8908c95efa4f2a02129a103878f857
-COMPONENT_ARCHIVE_URL=	http://forgeapi.puppetlabs.com/v3/files/$(COMPONENT_ARCHIVE)
-COMPONENT_PROJECT_URL=	http://www.openstack.org/
 COMPONENT_BUGDB=	utility/puppet
-COMPONENT_ANITYA_ID=	13321
+COMPONENT_ANITYA_ID=	14518
 
-TPNO=			24262
+TPNO=			34822
 
 include $(WS_MAKE_RULES)/prep.mk
 include $(WS_MAKE_RULES)/puppetmodule.mk
