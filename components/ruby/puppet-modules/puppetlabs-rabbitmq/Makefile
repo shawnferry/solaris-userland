@@ -25,18 +25,20 @@
 
 include ../../../../make-rules/shared-macros.mk
 
+GIT_REPO= https://github.com/puppetlabs/puppetlabs-inifile
+GIT_BRANCH= 5.5.0
+GIT_COMMIT_ID=  057a013
+GIT_HASH=sha256:1c65b317b7f49f1e0c4f3ee6169a4e31c3bcd44f4c81419c72db96e02f6c4073
+
+
 COMPONENT_NAME=		puppetlabs-rabbitmq
-COMPONENT_VERSION=	5.3.1
+COMPONENT_VERSION=	$(GIT_BRANCH)
 COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH=	\
-    sha256:1952877141ac8b0deb868ca3f501e1a26ab4de8fd54ad780d20cd9aa6172bde9
-COMPONENT_ARCHIVE_URL=	http://forgeapi.puppetlabs.com/v3/files/$(COMPONENT_ARCHIVE)
-COMPONENT_PROJECT_URL=	http://www.openstack.org/
 COMPONENT_BUGDB=	utility/puppet
 COMPONENT_ANITYA_ID=	13313
 
-TPNO=			27089
+TPNO=			34363
 
 include $(WS_MAKE_RULES)/prep.mk
 include $(WS_MAKE_RULES)/puppetmodule.mk
@@ -55,3 +57,9 @@ test:		$(NO_TESTS)
 
 
 REQUIRED_PACKAGES += system/core-os
+
+new-files: install
+	$(PKGSEND) generate $(PROTO_DIR)/usr/puppetlabs/puppet/modules/ | \
+		$(GSED)  -e 's/\(file\).*path=/\1 path=/' | \
+		$(CAT) *.p5m - | $(GNU_GREP) -h '^file' | sort | uniq -c | \
+		$(GSED) -e '/ 2 /d' -e 's/   1 //'
