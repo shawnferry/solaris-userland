@@ -27,18 +27,20 @@ RUBY_VERSION=2.1
 RUBY_LIB_VERSION=2.1.0
 RUBY_VERSIONS=2.1.0
 
+GIT_REPO= https://github.com/puppetlabs/puppet
+GIT_BRANCH= 4.10.0
+GIT_COMMIT_ID= 8afedd0
+GIT_HASH=sha256:1c65b317b7f49f1e0c4f3ee6169a4e31c3bcd44f4c81419c72db96e02f6c4073
+
 COMPONENT_NAME=		puppet
-COMPONENT_VERSION=	4.7.0
+COMPONENT_VERSION=	$(GIT_BRANCH)
 COMPONENT_PROJECT_URL=	http://puppetlabs.com/
 COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH=	\
-		sha256:f7eec9099c04a9ad65ee41b6c525b612c487e9a277d4d9ecaea587bb93c130bc
-COMPONENT_ARCHIVE_URL=	http://downloads.puppetlabs.com/puppet/$(COMPONENT_ARCHIVE)
 COMPONENT_BUGDB=	utility/puppet
 COMPONENT_ANITYA_ID=	7018
 
-TPNO=			32470
+TPNO=			34821
 
 include $(WS_MAKE_RULES)/prep.mk
 include $(WS_MAKE_RULES)/install.rb.mk
@@ -125,3 +127,10 @@ REQUIRED_PACKAGES += system/library
 REQUIRED_PACKAGES += system/library/gcc/gcc-c-runtime
 REQUIRED_PACKAGES += system/library/math
 REQUIRED_PACKAGES += system/network
+
+# This is a convenience method for the package maintainer
+new-files: install
+ $(PKGSEND) generate $(PROTO_DIR)/usr/puppetlabs/puppet/modules/ | \
+	 $(GSED)  -e 's/\(file\).*path=/\1 path=/' | \
+	 $(CAT) *.p5m - | $(GNU_GREP) -h '^file' | sort | uniq -c | \
+	 $(GSED) -e '/ 2 /d' -e 's/   1 //'
